@@ -50,6 +50,7 @@ class RFCommServer:
         self.on_data = on_data
         self.state = "setup"
         self.stop = False
+        self.failed_setup = 0
 
     def run(self):
         while not self.stop:
@@ -64,7 +65,7 @@ class RFCommServer:
                 if getattr(e, "__getitem__"):
                     if e[0] == 98: # Address already in use -> stop
                         print e[1]
-                        self.stop = True
+                        self.state = "setup"
                     else:
                         print "Error in 'run':", e
                         self.state = "setup"
@@ -73,6 +74,9 @@ class RFCommServer:
                     self.state = "setup"
 
     def setup(self):
+        self.failed_setup += 1
+        if self.failed_setup > 5: return False
+
         self.server_sock = server_sock = BluetoothSocket( RFCOMM )
         server_sock.bind(("", self.channel))
         server_sock.listen(self.channel)
@@ -86,6 +90,8 @@ class RFCommServer:
         )
         print "advertising BlueMoteD"
         self.state = "accept"
+
+        self.failed_setup = 0
     
     def accept(self):
         print "Waiting for connection on RFCOMM channel {0} with uuid {1}".format(self.port, self.uuid)
