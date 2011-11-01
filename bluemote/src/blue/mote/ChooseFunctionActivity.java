@@ -76,7 +76,7 @@ public class ChooseFunctionActivity extends ListActivity {
 	}
 
 	void onDeviceRead(String message) {
-		showMessage(message);
+		showMessage("read: "+message);
 	}
 
 	void onDeviceConnected() {
@@ -107,18 +107,12 @@ public class ChooseFunctionActivity extends ListActivity {
 			});
 			*/
 
-			final String[] enr = new String[1];
-			enr[0] = "0";
 			try {
 				socket = device.bt.createRfcommSocketToServiceRecord(MY_UUID);
-				enr[0] += "1";
 				socket.connect();
-				enr[0] += "2";
 				connected = true;
 				ins = socket.getInputStream();
-				enr[0] += "3";
 				outs = socket.getOutputStream();
-				enr[0] += "4";
 				
 				runOnUiThread(new Runnable() {
 					public void run() {
@@ -142,7 +136,7 @@ public class ChooseFunctionActivity extends ListActivity {
 				
 				runOnUiThread(new Runnable() {
 					public void run() {
-						showMessage(enr[0] + " " + e.getMessage());
+						showMessage(e.getMessage());
 					}
 				});
 				
@@ -174,6 +168,7 @@ public class ChooseFunctionActivity extends ListActivity {
 
 		public void write(String s) {
 			try {
+				// TODO blocks, the thread has to manage a buffer
 				outs.write(s.getBytes());
 			} catch (final IOException e) {
 				
