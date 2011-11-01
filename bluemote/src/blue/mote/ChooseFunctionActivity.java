@@ -22,7 +22,8 @@ public class ChooseFunctionActivity extends ListActivity {
 
 	static final String[] FUNCTIONS = new String[] { "Presentation", "VLC",
 			"schlumpfen" };
-	static final UUID MY_UUID = UUID.randomUUID();
+	static final UUID MY_UUID =
+		UUID.fromString("c6a54615-3868-4b38-bfa3-8aa0d6d2b9f5");
 
 	DeviceManager device_manager;
 
@@ -68,8 +69,6 @@ public class ChooseFunctionActivity extends ListActivity {
 		BluetoothDeviceWrap bt_device = ChooseDeviceActivity.bt_device;
 		device_manager = new DeviceManager(bt_device);
 		device_manager.start();
-
-		showMessage("functions of " + bt_device.toString());
 	}
 
 	void showMessage(CharSequence s) {
@@ -100,51 +99,89 @@ public class ChooseFunctionActivity extends ListActivity {
 		public void run() {
 			super.run();
 
+			/*
 			runOnUiThread(new Runnable() {
 				public void run() {
 					showMessage("device manager run");
 				}
 			});
+			*/
 
+			final String[] enr = new String[1];
+			enr[0] = "0";
 			try {
 				socket = device.bt.createRfcommSocketToServiceRecord(MY_UUID);
+				enr[0] += "1";
 				socket.connect();
+				enr[0] += "2";
 				connected = true;
-				onDeviceConnected();
 				ins = socket.getInputStream();
+				enr[0] += "3";
 				outs = socket.getOutputStream();
+				enr[0] += "4";
+				
+				runOnUiThread(new Runnable() {
+					public void run() {
+						onDeviceConnected();
+					}
+				});
+				
+				write("key F11\n");
+				
 				while (connected) {
 					final byte[] buffer = new byte[1024];
 					ins.read(buffer);
+				
 					runOnUiThread(new Runnable() {
 						public void run() {
 							onDeviceRead(buffer.toString());
 						}
 					});
 				}
-			} catch (IOException e) {
+			} catch (final IOException e) {
+				
+				runOnUiThread(new Runnable() {
+					public void run() {
+						showMessage(enr[0] + " " + e.getMessage());
+					}
+				});
+				
 				disconnect();
 			}
 
+			/*
 			runOnUiThread(new Runnable() {
 				public void run() {
 					showMessage("device manager stops");
 				}
 			});
+			*/
 		}
 
 		public void disconnect() {
 			try {
 				connected = false;
 				socket.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
+				
+				runOnUiThread(new Runnable() {
+					public void run() {
+						showMessage(e.getMessage());
+					}
+				});
 			}
 		}
 
 		public void write(String s) {
 			try {
 				outs.write(s.getBytes());
-			} catch (IOException e) {
+			} catch (final IOException e) {
+				
+				runOnUiThread(new Runnable() {
+					public void run() {
+						showMessage(e.getMessage());
+					}
+				});
 			}
 		}
 	}
