@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothClass;
-import android.bluetooth.BluetoothSocket;
 import android.os.Parcel;
 
 public class BluefakeDevice {
 
-	public BluetoothSocket createRfcommSocketToServiceRecord(UUID uuid)
+	public BluefakeSocket createRfcommSocketToServiceRecord(UUID uuid)
 			throws IOException {
-		return null;
+		return new BluefakeSocket();
 	}
 
 	public int describeContents() {

@@ -16,16 +16,17 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ChooseDeviceActivity extends ListActivity {
-
+	
 	static final int REQUEST_ENABLE_BT = 1;
 	static BluetoothAdapter bt_adapter;
-	static ArrayAdapter<String> btlist;
+	static ArrayAdapter<BluetoothDeviceWrap> btlist;
+	static BluetoothDeviceWrap bt_device;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		btlist = new ArrayAdapter<String>(this,
+		btlist = new ArrayAdapter<BluetoothDeviceWrap>(this,
 				android.R.layout.simple_list_item_1);
 		setListAdapter(btlist);
 
@@ -38,6 +39,7 @@ public class ChooseDeviceActivity extends ListActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				showMessage(((TextView) view).getText());
+				bt_device = btlist.getItem(position);
 				startActivity(choose_function);
 			}
 		});
@@ -46,6 +48,7 @@ public class ChooseDeviceActivity extends ListActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		btlist.clear();
 		if (!activateBT())
 			showMessage("You have no Bluetooth. We can't go on here.");
 	}
@@ -65,14 +68,14 @@ public class ChooseDeviceActivity extends ListActivity {
 
 	void discoverBT() {
 		showMessage("Discovering Bluetooth devices.");
-		Set<BluetoothDevice> devices = bt_adapter.getBondedDevices();
-		for (BluetoothDevice device : devices) {
-			btlist.add(device.getName() + " " + device.getAddress());
+		Set<BluetoothDevice> bonded_devices = bt_adapter.getBondedDevices();
+		for (BluetoothDevice device : bonded_devices) {
+			btlist.add(new BluetoothDeviceWrap(device));
 		}
 		// TODO discovering devices
 		// https://developer.android.com/guide/topics/wireless/bluetooth.html
 	}
-
+	
 	void showMessage(CharSequence s) {
 		Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
 	}
@@ -85,6 +88,16 @@ public class ChooseDeviceActivity extends ListActivity {
 				discoverBT();
 			else
 				showMessage("We really need Bluetooth to go on.");
+		}
+	}
+	
+	class BluetoothDeviceWrap {
+		public BluetoothDevice bt;
+		public BluetoothDeviceWrap(BluetoothDevice bt) {
+			this.bt = bt;
+		}
+		public String toString() {
+			return bt.getName() + " | " + bt.getAddress();
 		}
 	}
 }
