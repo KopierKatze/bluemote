@@ -58,7 +58,7 @@ class RFCommServer:
         self.server_sock.close()
         print "disconnected"
 
-    def listen_for_data(client_sock):
+    def listen_for_data(self, client_sock):
         data = client_sock.recv(1024)
         if len(data) == 0: return False
         print "received [%s]" % data
