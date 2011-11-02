@@ -306,8 +306,8 @@
     \setbeamertemplate{footline}{%
         \color{gray}%
         \parbox[t][7.46mm]{\paperwidth}{%
-            \rule{13.86mm}{0pt}%
-            \hspace{28.83mm}
+            \rule{7.86mm}{0pt}%
+            \parbox{34.83mm}{made with \LaTeX}
             %\parbox{28.83mm}{TU Dresden\ifx\insertdate\empty\else, \insertdate\fi}\rule{1.06mm}{0pt}%
             \parbox{40.57mm}{\centerline{\insertshorttitle}}\rule{7.46mm}{0pt}%
             \if@usePageNum%
