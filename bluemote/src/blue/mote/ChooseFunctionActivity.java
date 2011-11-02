@@ -51,8 +51,7 @@ public class ChooseFunctionActivity extends ListActivity {
 				if (cls == null)
 					toast_msg = "unknown function " + toast_msg;
 
-				Toast.makeText(getApplicationContext(), toast_msg,
-						Toast.LENGTH_SHORT).show();
+				showMessage(toast_msg);
 
 				if (cls != null) {
 					Intent intent = new Intent(ChooseFunctionActivity.this, cls);
