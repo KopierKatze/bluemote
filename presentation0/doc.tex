@@ -5,6 +5,16 @@
 \usepackage[normalem]{ulem}
 \usepackage{graphicx}
 
+% \imageframe{img/some_cat.jpg}
+\newcommand{\imageframe}[1]{
+    \begin{frame}
+        \begin{figure}
+            \centering
+            \includegraphics[height=0.9\textheight]{#1}
+        \end{figure}
+    \end{frame}
+}
+
 % the content
 \begin{document}
 
@@ -23,9 +33,7 @@
     \makebox[\textwidth]{\centering \Huge \textbf{ Bluemote } }
 \end{frame}
 
-\begin{frame}
-    \includegraphics[height=\textheight]{img/remotecat.jpg}
-\end{frame}
+\imageframe{img/remotecat.jpg}
 
 \section{Application Scenario}
 \begin{frame}
@@ -49,25 +57,11 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \includegraphics[height=\textheight]{img/btauth.png}
-\end{frame}
-
-\begin{frame}
-    \includegraphics[height=\textheight]{img/btactivate.png}
-\end{frame}
-
-\begin{frame}
-    \includegraphics[height=\textheight]{img/choosedevice.png}
-\end{frame}
-
-\begin{frame}
-    \includegraphics[height=\textheight]{img/choosefunction.png}
-\end{frame}
-
-\begin{frame}
-	\includegraphics[height=\textheight]{img/presentation.png}
-\end{frame}
+\imageframe{img/btauth.png}
+\imageframe{img/btactivate.png}
+\imageframe{img/choosedevice.png}
+\imageframe{img/choosefunction.png}
+\imageframe{img/presentation.png}
 
 \section{Challenges}
 \begin{frame}
@@ -109,9 +103,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \includegraphics[height=\textheight]{img/endcat.jpg}
-\end{frame}
+\imageframe{img/endcat.jpg}
 
 \end{document}
 
