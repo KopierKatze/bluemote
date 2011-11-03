@@ -63,7 +63,7 @@ public class ChooseFunctionActivity extends ListActivity {
 		
 		DeviceManager dm = new DeviceManager(bt_device, uuid);
 		
-		dm.setOnErrorCallback(new DeviceManager.OnErrorCallback() {
+		dm.onErrorCallback = new DeviceManager.OnErrorCallback() {
 			public void call(final String msg) {
 				runOnUiThread(new Runnable() {
 					public void run() {
@@ -71,7 +71,7 @@ public class ChooseFunctionActivity extends ListActivity {
 					}
 				});
 			}
-		});
+		};
 		
 		dm.start();
 		BluemoteActivity.device_manager = dm;
