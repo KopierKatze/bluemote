@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<LinearLayout android:id="@+id/AbsoluteLayout1"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:weightSum="1"
+	android:layout_height="wrap_content" android:layout_width="fill_parent">
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/presentation_function" />
+	<TextView android:text="Presentation" android:id="@+id/textView1"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_weight="0.25" android:layout_height="0dp"
+		android:layout_width="wrap_content" android:layout_gravity="center"></TextView>
+
+	<LinearLayout android:id="@+id/linearLayout2"
+		android:layout_width="fill_parent" android:orientation="vertical"
+		android:layout_height="55dp" android:layout_weight="0.25">
+	</LinearLayout>
+
+	<LinearLayout android:id="@+id/linearLayout1"
+		android:layout_width="fill_parent" android:weightSum="1"
+		android:layout_weight="0.25" android:layout_height="0dp">
+		<ImageButton android:src="@drawable/prev" android:id="@+id/imageButton2"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageButton>
+		<FrameLayout android:id="@+id/frameLayout1"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:layout_weight="0.9999">
+		</FrameLayout>
+		<ImageButton android:src="@drawable/next" android:id="@+id/imageButton1"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageButton>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/linearLayout3"
+		android:layout_width="fill_parent" android:orientation="vertical"
+		android:layout_weight="0.25" android:layout_height="wrap_content">
+		<ImageButton android:src="@drawable/black" android:id="@+id/imageButton3"
+			android:layout_height="wrap_content"
+			android:scaleType="fitXY" 
+			android:layout_width="wrap_content"></ImageButton>
+	</LinearLayout>
+
+
 
 </LinearLayout>
