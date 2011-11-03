@@ -20,19 +20,16 @@ import blue.mote.ChooseDeviceActivity.BluetoothDeviceWrap;
 
 public class ChooseFunctionActivity extends ListActivity {
 
-	static final String[] FUNCTIONS = new String[] { "Presentation", "VLC",
-			"schlumpfen" };
-	static final UUID MY_UUID =
-		UUID.fromString("c6a54615-3868-4b38-bfa3-8aa0d6d2b9f5");
-
-	DeviceManager device_manager;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		final String[] functions = new String[] {
+				getString(R.string.presentation_function),
+				getString(R.string.vlc_function) };
+
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, FUNCTIONS);
+				android.R.layout.simple_list_item_1, functions);
 		setListAdapter(adapter);
 
 		ListView lv = getListView();
@@ -47,13 +44,10 @@ public class ChooseFunctionActivity extends ListActivity {
 				else if (position == 1)
 					cls = VlcFunctionActivity.class;
 
-				CharSequence toast_msg = ((TextView) view).getText();
 				if (cls == null)
-					toast_msg = "unknown function " + toast_msg;
-
-				showMessage(toast_msg);
-
-				if (cls != null) {
+					showMessage("unknown function "
+							+ ((TextView) view).getText());
+				else {
 					Intent intent = new Intent(ChooseFunctionActivity.this, cls);
 					startActivity(intent);
 				}
@@ -66,8 +60,8 @@ public class ChooseFunctionActivity extends ListActivity {
 		super.onStart();
 
 		BluetoothDeviceWrap bt_device = ChooseDeviceActivity.bt_device;
-		device_manager = new DeviceManager(bt_device);
-		device_manager.start();
+		BluemoteActivity.device_manager = new DeviceManager(bt_device);
+		BluemoteActivity.device_manager.start();
 	}
 
 	void showMessage(CharSequence s) {
@@ -75,7 +69,7 @@ public class ChooseFunctionActivity extends ListActivity {
 	}
 
 	void onDeviceRead(String message) {
-		showMessage("read: "+message);
+		showMessage("read: " + message);
 	}
 
 	void onDeviceConnected() {
@@ -98,33 +92,27 @@ public class ChooseFunctionActivity extends ListActivity {
 		public void run() {
 			super.run();
 
-			/*
-			runOnUiThread(new Runnable() {
-				public void run() {
-					showMessage("device manager run");
-				}
-			});
-			*/
-
 			try {
-				socket = device.bt.createRfcommSocketToServiceRecord(MY_UUID);
+				socket = device.bt.createRfcommSocketToServiceRecord(UUID
+						.fromString(ChooseFunctionActivity.this
+								.getString(R.string.bluemote_uuid)));
 				socket.connect();
 				connected = true;
 				ins = socket.getInputStream();
 				outs = socket.getOutputStream();
-				
+
 				runOnUiThread(new Runnable() {
 					public void run() {
 						onDeviceConnected();
 					}
 				});
-				
+
 				write("key F11\n");
-				
+
 				while (connected) {
 					final byte[] buffer = new byte[1024];
 					ins.read(buffer);
-				
+
 					runOnUiThread(new Runnable() {
 						public void run() {
 							onDeviceRead(buffer.toString());
@@ -132,23 +120,16 @@ public class ChooseFunctionActivity extends ListActivity {
 					});
 				}
 			} catch (final IOException e) {
-				
+
 				runOnUiThread(new Runnable() {
 					public void run() {
 						showMessage(e.getMessage());
 					}
 				});
-				
+
 				disconnect();
 			}
 
-			/*
-			runOnUiThread(new Runnable() {
-				public void run() {
-					showMessage("device manager stops");
-				}
-			});
-			*/
 		}
 
 		public void disconnect() {
@@ -156,7 +137,7 @@ public class ChooseFunctionActivity extends ListActivity {
 				connected = false;
 				socket.close();
 			} catch (final IOException e) {
-				
+
 				runOnUiThread(new Runnable() {
 					public void run() {
 						showMessage(e.getMessage());
@@ -170,7 +151,7 @@ public class ChooseFunctionActivity extends ListActivity {
 				// TODO blocks, the thread has to manage a buffer
 				outs.write(s.getBytes());
 			} catch (final IOException e) {
-				
+
 				runOnUiThread(new Runnable() {
 					public void run() {
 						showMessage(e.getMessage());
