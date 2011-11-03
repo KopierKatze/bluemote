@@ -17,19 +17,19 @@
 	<LinearLayout android:id="@+id/linearLayout1"
 		android:layout_width="fill_parent" android:weightSum="1"
 		android:layout_weight="0.25" android:layout_height="0dp">
-		<ImageButton android:src="@drawable/prev" android:id="@+id/imageButton2"
+		<ImageButton android:src="@drawable/prev" android:id="@+id/prev_btn"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageButton>
 		<FrameLayout android:id="@+id/frameLayout1"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:layout_weight="0.9999">
 		</FrameLayout>
-		<ImageButton android:src="@drawable/next" android:id="@+id/imageButton1"
+		<ImageButton android:src="@drawable/next" android:id="@+id/next_btn"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"></ImageButton>
 	</LinearLayout>
 	<LinearLayout android:id="@+id/linearLayout3"
 		android:layout_width="fill_parent" android:orientation="vertical"
 		android:layout_weight="0.25" android:layout_height="wrap_content">
-		<ImageButton android:src="@drawable/black" android:id="@+id/imageButton3"
+		<ImageButton android:src="@drawable/black" android:id="@+id/black_btn"
 			android:layout_height="wrap_content"
 			android:scaleType="fitXY" 
 			android:layout_width="wrap_content"></ImageButton>
