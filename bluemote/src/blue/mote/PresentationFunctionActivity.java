@@ -9,5 +9,10 @@ public class PresentationFunctionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.presentation);
+		sendKey("F11");
+	}
+	
+	void sendKey(String key) {
+		BluemoteActivity.device_manager.write("key "+key+"\n");
 	}
 }

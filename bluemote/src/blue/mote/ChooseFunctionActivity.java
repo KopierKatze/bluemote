@@ -20,8 +20,7 @@ import blue.mote.ChooseDeviceActivity.BluetoothDeviceWrap;
 
 public class ChooseFunctionActivity extends ListActivity {
 
-	static final String[] FUNCTIONS = new String[] { "Presentation", "VLC",
-			"schlumpfen" };
+	static final String[] FUNCTIONS = new String[] { "Presentation", "VLC" };
 	static final UUID MY_UUID =
 		UUID.fromString("c6a54615-3868-4b38-bfa3-8aa0d6d2b9f5");
 
@@ -47,13 +46,9 @@ public class ChooseFunctionActivity extends ListActivity {
 				else if (position == 1)
 					cls = VlcFunctionActivity.class;
 
-				CharSequence toast_msg = ((TextView) view).getText();
 				if (cls == null)
-					toast_msg = "unknown function " + toast_msg;
-
-				showMessage(toast_msg);
-
-				if (cls != null) {
+					showMessage("unknown function "+((TextView)view).getText());
+				else {
 					Intent intent = new Intent(ChooseFunctionActivity.this, cls);
 					startActivity(intent);
 				}
@@ -66,8 +61,8 @@ public class ChooseFunctionActivity extends ListActivity {
 		super.onStart();
 
 		BluetoothDeviceWrap bt_device = ChooseDeviceActivity.bt_device;
-		device_manager = new DeviceManager(bt_device);
-		device_manager.start();
+		BluemoteActivity.device_manager = new DeviceManager(bt_device);
+		BluemoteActivity.device_manager.start();
 	}
 
 	void showMessage(CharSequence s) {
