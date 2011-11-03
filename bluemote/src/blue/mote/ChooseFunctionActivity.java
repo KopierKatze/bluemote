@@ -1,12 +1,8 @@
 package blue.mote;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.UUID;
 
 import android.app.ListActivity;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,10 +16,14 @@ import blue.mote.ChooseDeviceActivity.BluetoothDeviceWrap;
 
 public class ChooseFunctionActivity extends ListActivity {
 
+	UUID uuid;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		uuid = UUID.fromString(getString(R.string.bluemote_uuid));
+		
 		final String[] functions = new String[] {
 				getString(R.string.presentation_function),
 				getString(R.string.vlc_function) };
@@ -60,104 +60,24 @@ public class ChooseFunctionActivity extends ListActivity {
 		super.onStart();
 
 		BluetoothDeviceWrap bt_device = ChooseDeviceActivity.bt_device;
-		BluemoteActivity.device_manager = new DeviceManager(bt_device);
-		BluemoteActivity.device_manager.start();
+		
+		DeviceManager dm = new DeviceManager(bt_device, uuid);
+		
+		dm.setOnErrorCallback(new DeviceManager.OnErrorCallback() {
+			public void call(final String msg) {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						showMessage(msg);
+					}
+				});
+			}
+		});
+		
+		dm.start();
+		BluemoteActivity.device_manager = dm;
 	}
 
 	void showMessage(CharSequence s) {
 		Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-	}
-
-	void onDeviceRead(String message) {
-		showMessage("read: " + message);
-	}
-
-	void onDeviceConnected() {
-		showMessage("connected");
-	}
-
-	class DeviceManager extends Thread {
-
-		private final BluetoothDeviceWrap device;
-		private BluetoothSocket socket;
-		private InputStream ins;
-		private OutputStream outs;
-		private boolean connected = false;
-
-		public DeviceManager(BluetoothDeviceWrap device) {
-			this.device = device;
-		}
-
-		@Override
-		public void run() {
-			super.run();
-
-			try {
-				socket = device.bt.createRfcommSocketToServiceRecord(UUID
-						.fromString(ChooseFunctionActivity.this
-								.getString(R.string.bluemote_uuid)));
-				socket.connect();
-				connected = true;
-				ins = socket.getInputStream();
-				outs = socket.getOutputStream();
-
-				runOnUiThread(new Runnable() {
-					public void run() {
-						onDeviceConnected();
-					}
-				});
-
-				write("key F11\n");
-
-				while (connected) {
-					final byte[] buffer = new byte[1024];
-					ins.read(buffer);
-
-					runOnUiThread(new Runnable() {
-						public void run() {
-							onDeviceRead(buffer.toString());
-						}
-					});
-				}
-			} catch (final IOException e) {
-
-				runOnUiThread(new Runnable() {
-					public void run() {
-						showMessage(e.getMessage());
-					}
-				});
-
-				disconnect();
-			}
-
-		}
-
-		public void disconnect() {
-			try {
-				connected = false;
-				socket.close();
-			} catch (final IOException e) {
-
-				runOnUiThread(new Runnable() {
-					public void run() {
-						showMessage(e.getMessage());
-					}
-				});
-			}
-		}
-
-		public void write(String s) {
-			try {
-				// TODO blocks, the thread has to manage a buffer
-				outs.write(s.getBytes());
-			} catch (final IOException e) {
-
-				runOnUiThread(new Runnable() {
-					public void run() {
-						showMessage(e.getMessage());
-					}
-				});
-			}
-		}
 	}
 }

@@ -1,14 +1,12 @@
 package blue.mote;
 
-import blue.mote.ChooseFunctionActivity.DeviceManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 public class BluemoteActivity extends Activity {
 
-	public static DeviceManager device_manager;
+	static DeviceManager device_manager;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
