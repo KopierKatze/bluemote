@@ -61,8 +61,7 @@ public class ChooseFunctionActivity extends ListActivity {
 
 		BluetoothDeviceWrap bt_device = ChooseDeviceActivity.bt_device;
 		
-		DeviceManager dm = new DeviceManager(bt_device, uuid);
-		
+		DeviceManager dm = new DeviceManager(bt_device, uuid);		
 		dm.onErrorCallback = new DeviceManager.OnErrorCallback() {
 			public void call(final String msg) {
 				runOnUiThread(new Runnable() {

@@ -18,7 +18,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ChooseDeviceActivity extends ListActivity {
 	
 	static final int REQUEST_ENABLE_BT = 1;
-	static BluetoothAdapter bt_adapter;
 	static ArrayAdapter<BluetoothDeviceWrap> btlist;
 	static BluetoothDeviceWrap bt_device;
 
@@ -54,10 +53,10 @@ public class ChooseDeviceActivity extends ListActivity {
 	}
 
 	boolean activateBT() {
-		bt_adapter = BluetoothAdapter.getDefaultAdapter();
-		if (bt_adapter == null)
+		BluemoteActivity.bt_adapter = BluetoothAdapter.getDefaultAdapter();
+		if (BluemoteActivity.bt_adapter == null)
 			return false;
-		if (!bt_adapter.isEnabled()) {
+		if (!BluemoteActivity.bt_adapter.isEnabled()) {
 			Intent enableBtIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -68,7 +67,7 @@ public class ChooseDeviceActivity extends ListActivity {
 
 	void discoverBT() {
 		showMessage("Discovering Bluetooth devices.");
-		Set<BluetoothDevice> bonded_devices = bt_adapter.getBondedDevices();
+		Set<BluetoothDevice> bonded_devices = BluemoteActivity.bt_adapter.getBondedDevices();
 		for (BluetoothDevice device : bonded_devices) {
 			btlist.add(new BluetoothDeviceWrap(device));
 		}
