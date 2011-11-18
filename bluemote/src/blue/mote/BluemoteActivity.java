@@ -1,12 +1,14 @@
 package blue.mote;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 
 public class BluemoteActivity extends Activity {
 
 	static DeviceManager device_manager;
+	static BluetoothAdapter bt_adapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
