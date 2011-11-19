@@ -48,8 +48,8 @@ public class ChooseDeviceActivity extends ListActivity {
 	protected void onStart() {
 		super.onStart();
 		btlist.clear();
-		if (!activateBT())
-			showMessage("You have no Bluetooth. We can't go on here.");
+		/*if (!activateBT())
+			showMessage("You have no Bluetooth. We can't go on here.");*/
 	}
 
 	boolean activateBT() {

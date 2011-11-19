@@ -1,5 +1,17 @@
 package blue.mote;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.apache.http.*;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +25,8 @@ public class PresentationFunctionActivity extends Activity {
 		setContentView(R.layout.presentation);
 		bindKey(R.id.next_btn, "Right");
 		bindKey(R.id.prev_btn, "Left");
-		bindKey(R.id.black_btn, "b");
+		bindKey(R.id.black_btn, "F11");
+		
 	}
 	
 	void bindKey(final int btn_id, final String key) {
@@ -26,6 +39,31 @@ public class PresentationFunctionActivity extends Activity {
 	}
 	
 	void sendKey(String key) {
-		BluemoteActivity.device_manager.write("key "+key+"\n");
+	
+		URI ur = null;
+		try {
+			ur = new URI("http://192.168.2.106:4242/cmd");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		StringEntity ent = null;
+		try {
+			ent = new StringEntity("key " + key + "\n");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		
+		HttpPost post = new HttpPost();
+		post.setURI(ur);
+		post.setEntity(ent);
+		
+		HttpResponse response = null;
+		try {
+			response = BluemoteActivity.httpclient.execute(post);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

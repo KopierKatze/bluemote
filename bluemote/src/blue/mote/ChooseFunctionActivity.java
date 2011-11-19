@@ -55,26 +55,7 @@ public class ChooseFunctionActivity extends ListActivity {
 		});
 	}
 
-	@Override
-	protected void onStart() {
-		super.onStart();
-
-		BluetoothDeviceWrap bt_device = ChooseDeviceActivity.bt_device;
-		
-		DeviceManager dm = new DeviceManager(bt_device, uuid);		
-		dm.onErrorCallback = new DeviceManager.OnErrorCallback() {
-			public void call(final String msg) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						showMessage(msg);
-					}
-				});
-			}
-		};
-		
-		dm.start();
-		BluemoteActivity.device_manager = dm;
-	}
+	
 
 	void showMessage(CharSequence s) {
 		Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
