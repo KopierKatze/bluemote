@@ -1,7 +1,11 @@
 package blue.mote;
 
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -18,7 +22,10 @@ public class BluemoteActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		httpclient = new DefaultHttpClient();
+		HttpParams params = new BasicHttpParams();
+		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+		httpclient = new DefaultHttpClient(params);
+		
 		Intent intent = new Intent(this, PresentationFunctionActivity.class);
 		startActivity(intent);
 		

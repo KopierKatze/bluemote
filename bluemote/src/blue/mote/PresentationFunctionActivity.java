@@ -10,7 +10,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,7 +28,7 @@ public class PresentationFunctionActivity extends Activity {
 		setContentView(R.layout.presentation);
 		bindKey(R.id.next_btn, "Right");
 		bindKey(R.id.prev_btn, "Left");
-		bindKey(R.id.black_btn, "F11");
+		bindKey(R.id.black_btn, "B");
 		
 	}
 	
@@ -52,7 +55,6 @@ public class PresentationFunctionActivity extends Activity {
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
-		
 		HttpPost post = new HttpPost();
 		post.setURI(ur);
 		post.setEntity(ent);
