@@ -1,6 +1,7 @@
 package blue.mote;
 
 import java.util.Set;
+import java.util.UUID;
 
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
@@ -20,7 +21,7 @@ public class ChooseDeviceActivity extends ListActivity {
 	static final int REQUEST_ENABLE_BT = 1;
 	static ArrayAdapter<BluetoothDeviceWrap> btlist;
 	static BluetoothDeviceWrap bt_device;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +40,9 @@ public class ChooseDeviceActivity extends ListActivity {
 					int position, long id) {
 				showMessage(((TextView) view).getText());
 				bt_device = btlist.getItem(position);
+				DeviceManager dm = new DeviceManager(bt_device, UUID.fromString(getString(R.string.bluemote_uuid)));
+				dm.run();
+				BluemoteActivity.device_manager = dm;
 				startActivity(choose_function);
 			}
 		});
@@ -48,8 +52,8 @@ public class ChooseDeviceActivity extends ListActivity {
 	protected void onStart() {
 		super.onStart();
 		btlist.clear();
-		/*if (!activateBT())
-			showMessage("You have no Bluetooth. We can't go on here.");*/
+		if (!activateBT())
+			showMessage("You have no Bluetooth. We can't go on here.");
 	}
 
 	boolean activateBT() {

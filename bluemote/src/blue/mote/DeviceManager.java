@@ -38,19 +38,23 @@ class DeviceManager extends Thread {
 		super.run();
 
 		try {
+			System.out.println("--------------------------- run");
 			socket = device.bt.createRfcommSocketToServiceRecord(uuid);
+			System.out.println("------------------------------socket");
 			socket.connect();
 			connected = true;
+			System.out.println("---------------------------connected");
 			ins = socket.getInputStream();
 			outs = socket.getOutputStream();
+			System.out.println("---------------------------" + outs.toString());
 			if (onConnectedCallback != null)
 				onConnectedCallback.call();
-			while (connected) {
-				final byte[] buffer = new byte[1024];
-				ins.read(buffer);
-				if (onReadCallback != null)
-					onReadCallback.call(new String(buffer));
-			}
+//			while (connected) {
+//				final byte[] buffer = new byte[1024];
+//				ins.read(buffer);
+//				if (onReadCallback != null)
+//					onReadCallback.call(new String(buffer));
+//			}
 		} catch (final IOException e) {
 			if (onErrorCallback != null)
 				onErrorCallback.call(e.getMessage());

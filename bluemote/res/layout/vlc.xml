@@ -1,13 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/vlc_function" />
-
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:weightSum="1"
+	android:fitsSystemWindows="true">
+	
+	<!-- upper buttons -->
+	<LinearLayout android:layout_height="wrap_content"
+		android:id="@+id/linearLayout2" android:layout_width="fill_parent"
+		android:paddingTop="25dp"
+		>
+		<LinearLayout android:layout_height="wrap_content"
+			android:id="@+id/linearLayout1" android:layout_width="wrap_content"
+			android:paddingLeft="100dp">
+			<ImageButton android:layout_height="120dp"
+				android:src="@drawable/play" android:id="@+id/play"
+				android:layout_width="120dp"
+				android:scaleType="fitXY" ></ImageButton>
+	<!-- layout for 2 volume buttons on the right side -->
+			<LinearLayout android:layout_height="wrap_content"
+				android:id="@+id/linearLayout3"
+				android:orientation="vertical" 
+				android:paddingLeft="30dp" android:layout_width="fill_parent">		
+			<Button android:text="^" android:id="@+id/louder"
+				android:layout_width="50dp" android:layout_height="50dp"></Button>
+			<Button android:text="v" android:id="@+id/quieter"
+				android:layout_width="50dp" android:layout_height="50dp"></Button>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+	
+	<!-- buttons in the middle -->
+	<LinearLayout android:layout_height="wrap_content"
+		android:id="@+id/linearLayout4" android:layout_width="fill_parent"
+		android:paddingLeft="50dp"
+		android:paddingTop="25dp" >
+		<ImageButton android:layout_height="100dp"
+			android:src="@drawable/sb" android:id="@+id/slowback"
+			android:layout_width="100dp" 
+			android:scaleType="fitXY"
+			></ImageButton>
+		<LinearLayout android:layout_height="wrap_content"
+			android:id="@+id/linearLayout5" android:layout_width="15dp"></LinearLayout>
+		<ImageButton android:layout_height="100dp"
+			android:src="@drawable/sf" android:id="@+id/slowforward"
+			android:layout_width="100dp" android:scaleType="fitXY"></ImageButton>
+	</LinearLayout>
+	
+	<!-- lower buttons -->
+	<TableLayout android:layout_height="wrap_content"
+		android:layout_width="fill_parent" android:id="@+id/tableLayout1"
+		android:stretchColumns="1" android:paddingTop="25dp">
+		
+		<TableRow android:id="@+id/tableRow2" android:layout_width="fill_parent">
+		<ImageButton android:id="@+id/fastback"
+			android:layout_height="65dp" android:layout_width="65dp"
+			android:src="@drawable/fb" 
+			android:gravity="left"
+			android:scaleType="fitXY"></ImageButton>
+		<LinearLayout android:layout_height="wrap_content"
+			android:id="@+id/linearLayout5" android:layout_width="60dp"></LinearLayout>	
+		<ImageButton android:id="@+id/fastforward"
+			android:layout_height="65dp" android:layout_width="65dp"
+			android:src="@drawable/ff" 
+			android:scaleType="fitXY"
+			
+			></ImageButton>
+			
+		</TableRow>
+		
+	</TableLayout>
+	
+	
 </LinearLayout>

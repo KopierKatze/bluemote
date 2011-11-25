@@ -21,29 +21,37 @@ public class VlcFunctionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vlc);
-		bindKey(R.id.play, "space");
-		bindKey(R.id.louder, "keydown Control_L" + "\n" +
-				"key Up" + "\n" +
-				"keyup Control_L");
-		bindKey(R.id.quieter, "keydown Control_L" + "\n" +
-				"key Down" + "\n" +
-				"keyup Control_L");
-		bindKey(R.id.slowback, "minus");
-		bindKey(R.id.slowforward, "plus");
-		bindKey(R.id.fastback, "p");
-		bindKey(R.id.fastforward, "n");
+		bindKey(R.id.play, "key space\n");
+		bindKey(R.id.louder, 
+				"keydown Control_L\n" + 
+				"key Up\n" +
+				"keyup Control_L\n");
+		bindKey(R.id.quieter, 
+				"keydown Control_L\n" + 
+				"key Down\n" + 
+				"keyup Control_L\n");
+		bindKey(R.id.slowback, 
+				"keydown Shift_L\n" + 
+				"key Left\n" + 
+				"keyup Shift_L\n");
+		bindKey(R.id.slowforward, 
+				"keydown Shift_L\n" + 
+				"key Right\n" + 
+				"keyup Shift_L\n");
+		bindKey(R.id.fastback, "key p\n");
+		bindKey(R.id.fastforward, "key n\n");
 	}
 
 	void bindKey(final int btn_id, final String key) {
 		View btn = (View)findViewById(btn_id);
 		btn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				sendKey(key);
+				sendKeyViaBT(key);
 			}
 		});
 	}
 	
-	private void sendKey(String key){
+	private void sendKeyViaHTTP(String key){
 		URI ur = null;
 		try {
 			ur = new URI("http://192.168.2.106:4242/cmd");
@@ -73,5 +81,9 @@ public class VlcFunctionActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void sendKeyViaBT(String command){
+		BluemoteActivity.device_manager.write(command);
 	}
 }

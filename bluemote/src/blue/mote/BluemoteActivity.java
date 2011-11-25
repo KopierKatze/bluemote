@@ -26,7 +26,7 @@ public class BluemoteActivity extends Activity {
 		params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
 		httpclient = new DefaultHttpClient(params);
 		
-		Intent intent = new Intent(this, ChooseFunctionActivity.class);
+		Intent intent = new Intent(this, ChooseDeviceActivity.class);
 		startActivity(intent);
 		
 	}

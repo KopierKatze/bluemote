@@ -28,7 +28,8 @@
 	</LinearLayout>
 	<LinearLayout android:id="@+id/linearLayout3"
 		android:layout_width="fill_parent" android:orientation="vertical"
-		android:layout_weight="0.25" android:layout_height="wrap_content">
+		android:layout_weight="0.25" 
+		android:paddingTop="10dp" android:layout_height="wrap_content">
 		<ImageButton android:src="@drawable/black" android:id="@+id/black_btn"
 			android:layout_height="wrap_content"
 			android:scaleType="fitXY" 
