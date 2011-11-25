@@ -2,6 +2,8 @@
 
 def main():
     keyrelay = KeyRelay()
+    keyrelay.xte_cmd("key h\n")
+    keyrelay.xte_cmd("key w\n")
     rfcomm = RFCommServer(keyrelay.xte_cmd)
     rfcomm.run()
 
@@ -18,22 +20,26 @@ class KeyRelay:
         self.xte_cmd("key {0}".format(key))
 
     def xte_cmd(self, input):
-        self.xte.communicate(input=input)
+	print repr(input)
+        #self.xte.communicate(input=input)
+        if input[-1] != '\n': input[-1] += '\n'
+        self.xte.stdin.write(input)
 
 ####
 
 from bluetooth import *
+from random import randrange
 
 class RFCommServer:
 
     def __init__(self, on_data):
-        self.channel = 1
-        self.uuid = "c6a54615-3868-4b38-bfa3-8aa0d6d2b9f5"
+        self.channel = 6
+        self.uuid = "00001101-0000-1000-8000-00805F9B34F9"
         self.on_data = on_data
 
     def run(self):
         self.server_sock = server_sock = BluetoothSocket( RFCOMM )
-        server_sock.bind(("", PORT_ANY))
+        server_sock.bind(("", self.channel))
         server_sock.listen(self.channel)
         self.port = server_sock.getsockname()[1]
 
@@ -60,7 +66,6 @@ class RFCommServer:
 
     def listen_for_data(self, client_sock):
         data = client_sock.recv(1024)
-        if len(data) == 0: return False
         print "received [%s]" % data
         self.on_data(data)
         return True
