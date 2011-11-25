@@ -9,5 +9,10 @@ public class VlcFunctionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vlc);
+		//bindKey(R.id.lauter);
+	}
+
+	private void bindKey(int lauter) {
+		
 	}
 }
