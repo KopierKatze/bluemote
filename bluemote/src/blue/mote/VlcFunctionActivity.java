@@ -16,12 +16,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class VlcFunctionActivity extends Activity {
-
+	static boolean playing = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vlc);
-		bindKey(R.id.play, "key space\n");
+		if(playing){
+			View btn = (View)findViewById(R.id.play);
+			btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.play));
+		}
+		playKey(R.id.play, "key space\n");
 		bindKey(R.id.louder, 
 				"keydown Control_L\n" + 
 				"key Up\n" +
@@ -47,8 +51,31 @@ public class VlcFunctionActivity extends Activity {
 		btn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				sendKeyViaBT(key);
+				
 			}
 		});
+	}
+	
+	private void playKey(final int btn_id, final String key){
+		View btn = (View)findViewById(btn_id);
+		playing = !playing;
+		if(!playing){
+			//btn.setBackgroundColor(R.drawable.play);
+			btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.play));
+		}else{
+			//btn.setBackgroundColor(R.drawable.pause);
+			btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.pause));
+			
+		}
+		btn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				sendKeyViaBT(key);
+			}
+		});
+	}
+	
+	private void sendKeyViaBT(String command){
+		BluemoteActivity.device_manager.write(command);
 	}
 	
 	private void sendKeyViaHTTP(String key){
@@ -81,9 +108,5 @@ public class VlcFunctionActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void sendKeyViaBT(String command){
-		BluemoteActivity.device_manager.write(command);
 	}
 }
