@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 
 public class VlcFunctionActivity extends Activity {
 	static boolean playing = false;
@@ -21,10 +22,8 @@ public class VlcFunctionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vlc);
-		if(playing){
-			View btn = (View)findViewById(R.id.play);
-			btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.play));
-		}
+		ImageButton btn = (ImageButton)findViewById(R.id.play);
+		btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
 		playKey(R.id.play, "key space\n");
 		bindKey(R.id.louder, 
 				"keydown Control_L\n" + 
@@ -57,18 +56,11 @@ public class VlcFunctionActivity extends Activity {
 	}
 	
 	private void playKey(final int btn_id, final String key){
-		View btn = (View)findViewById(btn_id);
-		playing = !playing;
-		if(!playing){
-			//btn.setBackgroundColor(R.drawable.play);
-			btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.play));
-		}else{
-			//btn.setBackgroundColor(R.drawable.pause);
-			btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.pause));
-			
-		}
+		final ImageButton btn = (ImageButton)findViewById(btn_id);
 		btn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				playing = !playing;
+				btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
 				sendKeyViaBT(key);
 			}
 		});
