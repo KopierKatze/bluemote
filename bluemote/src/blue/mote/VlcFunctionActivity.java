@@ -11,6 +11,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,7 @@ public class VlcFunctionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vlc);
+		BluemoteActivity.bluemote.disableScreenLock();
 		ImageButton btn = (ImageButton)findViewById(R.id.play);
 		btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
 		playKey(R.id.play, "key space\n");

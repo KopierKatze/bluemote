@@ -23,11 +23,7 @@ public class PresentationFunctionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.presentation);
-		
-		//disable screen locking
-		KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
-		KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
-		lock.disableKeyguard();
+		BluemoteActivity.bluemote.disableScreenLock();
 		
 		bindKey(R.id.next_btn, "Right");
 		bindKey(R.id.prev_btn, "Left");
