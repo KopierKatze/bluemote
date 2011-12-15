@@ -43,7 +43,6 @@ public class PresentationFunctionActivity extends Activity {
 	private void sendKeyViaBT(String command){
 		BluemoteActivity.device_manager.write(command);
 	}
-	
 	protected void onStop(Bundle savedInstanceState){
 		BluemoteActivity.bluemote.reenableScreenLock();
 	}
