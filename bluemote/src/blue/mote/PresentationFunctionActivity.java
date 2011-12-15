@@ -25,9 +25,9 @@ public class PresentationFunctionActivity extends Activity {
 		setContentView(R.layout.presentation);
 		BluemoteActivity.bluemote.disableScreenLock();
 		
-		bindKey(R.id.next_btn, "Right");
-		bindKey(R.id.prev_btn, "Left");
-		bindKey(R.id.black_btn, "B");
+		bindKey(R.id.next_btn, "key Right");
+		bindKey(R.id.prev_btn, "key Left");
+		bindKey(R.id.black_btn, "key B");
 		
 	}
 	
@@ -35,9 +35,13 @@ public class PresentationFunctionActivity extends Activity {
 		View btn = (View)findViewById(btn_id);
 		btn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				sendKey(key);
+				sendKeyViaBT(key);
 			}
 		});
+	}
+	
+	private void sendKeyViaBT(String command){
+		BluemoteActivity.device_manager.write(command);
 	}
 	
 	void sendKey(String key) {
@@ -66,5 +70,18 @@ public class PresentationFunctionActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected void onStop(Bundle savedInstanceState){
+		BluemoteActivity.bluemote.reenableScreenLock();
+	}
+	protected void onPause(Bundle savedInstanceState){
+		BluemoteActivity.bluemote.reenableScreenLock();
+	}
+	protected void onDestroy(Bundle savedInstanceSate){
+		BluemoteActivity.bluemote.reenableScreenLock();
+	}
+	protected void onResume(Bundle savedInstanceState){
+		BluemoteActivity.bluemote.disableScreenLock();
 	}
 }

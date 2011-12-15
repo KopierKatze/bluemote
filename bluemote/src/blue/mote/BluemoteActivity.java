@@ -40,4 +40,10 @@ public class BluemoteActivity extends Activity {
 		KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
 		lock.disableKeyguard();
 	}
+	
+	void reenableScreenLock(){
+		KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
+		KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
+		lock.reenableKeyguard();
+	}
 }

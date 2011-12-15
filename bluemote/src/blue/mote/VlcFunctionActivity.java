@@ -104,4 +104,17 @@ public class VlcFunctionActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	
+	protected void onStop(Bundle savedInstanceState){
+		BluemoteActivity.bluemote.reenableScreenLock();
+	}
+	protected void onPause(Bundle savedInstanceState){
+		BluemoteActivity.bluemote.reenableScreenLock();
+	}
+	protected void onDestroy(Bundle savedInstanceSate){
+		BluemoteActivity.bluemote.reenableScreenLock();
+	}
+	protected void onResume(Bundle savedInstanceState){
+		BluemoteActivity.bluemote.disableScreenLock();
+	}
 }
