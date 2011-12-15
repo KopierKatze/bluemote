@@ -2,8 +2,6 @@
 
 def main():
     keyrelay = KeyRelay()
-    keyrelay.xte_cmd("key h\n")
-    keyrelay.xte_cmd("key w\n")
     rfcomm = RFCommServer(keyrelay.xte_cmd)
     rfcomm.run()
 
@@ -20,9 +18,9 @@ class KeyRelay:
         self.xte_cmd("key {0}".format(key))
 
     def xte_cmd(self, input):
-	print repr(input)
+        print repr(input)
         #self.xte.communicate(input=input)
-        if input[-1] != '\n': input[-1] += '\n'
+        if input[-1] != '\n': input += '\n'
         self.xte.stdin.write(input)
 
 ####
@@ -66,7 +64,6 @@ class RFCommServer:
 
     def listen_for_data(self, client_sock):
         data = client_sock.recv(1024)
-        print "received [%s]" % data
         self.on_data(data)
         return True
 
