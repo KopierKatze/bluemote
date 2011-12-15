@@ -1,0 +1,81 @@
+\documentclass[ddc nogerman]{tudbeamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+
+% \imageframe{img/some_cat.jpg}
+\newcommand{\imageframe}[1]{
+    \begin{frame}
+        \begin{figure}
+            \centering
+            \includegraphics[height=0.9\textheight]{#1}
+        \end{figure}
+    \end{frame}
+}
+
+% the content
+\begin{document}
+
+\einrichtung{Department of Computer Science}
+\institut{Institute for System Archticture}
+\professur{Chair for Computer Networks}
+
+\title{Application Development for Mobile and Ubiquitous Computing}
+\subtitle{Seminar Task First Presentation}
+\author{Alexandra Weiß, Gilbert Röhrbein}
+
+\maketitle
+
+\section{Bluemote}
+\begin{frame}
+    \makebox[\textwidth]{\centering \Huge \textbf{ Bluemote } }
+\end{frame}
+
+\section{Concrete Use Cases}
+\begin{frame}
+    \begin{itemize}
+        \item here be use cases
+
+    \end{itemize}
+\end{frame}
+
+% screenshots
+\imageframe{img/btactivate.png}
+\imageframe{img/btauth.png}
+\imageframe{img/choosedevice.png}
+\imageframe{img/choosefunction.png}
+\imageframe{img/presentation.png}
+\imageframe{img/vlc.png}
+
+\section{Architecture}
+\begin{frame}
+    \begin{itemize}
+        \item here be architecture
+    \end{itemize}
+\end{frame}
+
+\section{Challenges}
+\begin{frame}
+    \begin{itemize}
+        \item bluetooth and its annoyances
+        \begin{itemize}
+        	\item getnextfreechannel: channel that is blocked by another service
+        	\item no error messages
+            \item y u no bluetooth, emulator?!
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{TODO}
+\begin{frame}
+    \begin{itemize}
+        \item handle incoming: stop video
+        \item port to windows
+        \item sort list of devices(recently used)
+    \end{itemize}
+\end{frame}
+
+\end{document}
+
