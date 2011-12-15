@@ -44,34 +44,6 @@ public class PresentationFunctionActivity extends Activity {
 		BluemoteActivity.device_manager.write(command);
 	}
 	
-	void sendKey(String key) {
-	
-		URI ur = null;
-		try {
-			ur = new URI("http://192.168.2.106:4242/cmd");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		StringEntity ent = null;
-		try {
-			ent = new StringEntity("key " + key + "\n");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		HttpPost post = new HttpPost();
-		post.setURI(ur);
-		post.setEntity(ent);
-		
-		HttpResponse response = null;
-		try {
-			response = BluemoteActivity.httpclient.execute(post);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	protected void onStop(Bundle savedInstanceState){
 		BluemoteActivity.bluemote.reenableScreenLock();
 	}

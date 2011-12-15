@@ -73,38 +73,6 @@ public class VlcFunctionActivity extends Activity {
 		BluemoteActivity.device_manager.write(command);
 	}
 	
-	private void sendKeyViaHTTP(String key){
-		URI ur = null;
-		try {
-			ur = new URI("http://192.168.2.106:4242/cmd");
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		StringEntity ent = null;
-		try {
-			ent = new StringEntity("key " + key + "\n");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		ent.setContentEncoding("text/plain; charset=utf-8");
-		HttpPost post = new HttpPost();
-		post.setURI(ur);
-		post.setEntity(ent);
-		
-		HttpResponse response = null;
-		try {
-			long timestart = System.currentTimeMillis();
-			response = BluemoteActivity.httpclient.execute(post);
-			long timestop = System.currentTimeMillis();
-			System.out.println(timestop - timestart);
-			
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	protected void onStop(Bundle savedInstanceState){
 		BluemoteActivity.bluemote.reenableScreenLock();
 	}
