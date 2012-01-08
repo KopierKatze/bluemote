@@ -19,11 +19,9 @@ public class BluemoteActivity extends Activity {
 	static DeviceManager device_manager;
 	static BluetoothAdapter bt_adapter;
 	static HttpClient httpclient;
-	static BluemoteActivity bluemote;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		bluemote = this;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		HttpParams params = new BasicHttpParams();
@@ -33,17 +31,5 @@ public class BluemoteActivity extends Activity {
 		Intent intent = new Intent(this, ChooseDeviceActivity.class);
 		startActivity(intent);
 		
-	}
-	
-	void disableScreenLock(){
-		KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
-		KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
-		lock.disableKeyguard();
-	}
-	
-	void reenableScreenLock(){
-		KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Activity.KEYGUARD_SERVICE);
-		KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
-		lock.reenableKeyguard();
 	}
 }

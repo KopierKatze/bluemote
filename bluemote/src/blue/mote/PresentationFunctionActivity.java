@@ -1,29 +1,17 @@
 package blue.mote;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-
-import android.app.Activity;
-import android.app.KeyguardManager;
-import android.app.KeyguardManager.KeyguardLock;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class PresentationFunctionActivity extends Activity {
+public class PresentationFunctionActivity extends FunctionActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.presentation);
-		BluemoteActivity.bluemote.disableScreenLock();
+		
+		disableScreenLock();
 		
 		bindKey(R.id.next_btn, "key Right");
 		bindKey(R.id.prev_btn, "key Left");
@@ -42,17 +30,5 @@ public class PresentationFunctionActivity extends Activity {
 	
 	private void sendKeyViaBT(String command){
 		BluemoteActivity.device_manager.write(command);
-	}
-	protected void onStop(Bundle savedInstanceState){
-		BluemoteActivity.bluemote.reenableScreenLock();
-	}
-	protected void onPause(Bundle savedInstanceState){
-		BluemoteActivity.bluemote.reenableScreenLock();
-	}
-	protected void onDestroy(Bundle savedInstanceSate){
-		BluemoteActivity.bluemote.reenableScreenLock();
-	}
-	protected void onResume(Bundle savedInstanceState){
-		BluemoteActivity.bluemote.disableScreenLock();
 	}
 }

@@ -1,6 +1,5 @@
 package blue.mote;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -8,7 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
-public class VlcFunctionActivity extends Activity {
+public class VlcFunctionActivity extends FunctionActivity {
 	static boolean playing = false;
 	static PhoneStateListener phonelistener;
 	@Override
@@ -32,7 +31,8 @@ public class VlcFunctionActivity extends Activity {
 		    }
 		};
 		
-		BluemoteActivity.bluemote.disableScreenLock();
+		disableScreenLock();
+		
 		ImageButton btn = (ImageButton)findViewById(R.id.play);
 		btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
 		playKey(R.id.play, "key space\n");
@@ -79,18 +79,5 @@ public class VlcFunctionActivity extends Activity {
 	
 	private void sendKeyViaBT(String command){
 		BluemoteActivity.device_manager.write(command);
-	}
-	
-	protected void onStop(Bundle savedInstanceState){
-		BluemoteActivity.bluemote.reenableScreenLock();
-	}
-	protected void onPause(Bundle savedInstanceState){
-		BluemoteActivity.bluemote.reenableScreenLock();
-	}
-	protected void onDestroy(Bundle savedInstanceSate){
-		BluemoteActivity.bluemote.reenableScreenLock();
-	}
-	protected void onResume(Bundle savedInstanceState){
-		BluemoteActivity.bluemote.disableScreenLock();
 	}
 }
