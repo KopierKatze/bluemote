@@ -61,11 +61,14 @@ class RFCommServer:
                 print "BluetoothError in 'run':", e
                 self.state = "setup" # try again
             except Exception as e:
-                try:
+                if getattr(e, "__getitem__"):
                     if e[0] == 98: # Address already in use -> stop
                         print e[1]
                         self.stop = True
-                except:
+                    else:
+                        print "Error in 'run':", e
+                        self.state = "setup"
+                else:
                     print "Error in 'run':", e
                     self.state = "setup"
 
@@ -92,17 +95,16 @@ class RFCommServer:
 
     def read(self):
         try:
-            while self.listen_for_data(self.client_sock): pass
+            while self.listen_for_data(): pass
         except KeyboardInterrupt:
             pass
-        except:
-            print sys.exc_info()[0]
         finally:
             self.state = "close"
 
     def close(self):
         self.client_sock.close()
         print "disconnected"
+        self.state = "setup"
 
     def listen_for_data(self):
         data = self.client_sock.recv(1024)
