@@ -22,11 +22,11 @@
 			<LinearLayout android:layout_height="wrap_content"
 				android:id="@+id/linearLayout3"
 				android:orientation="vertical" 
-				android:paddingLeft="30dp" android:layout_width="fill_parent">		
+				android:paddingLeft="20dp" android:layout_width="fill_parent">		
 			<Button android:text="^" android:id="@+id/louder"
-				android:layout_width="50dp" android:layout_height="50dp"></Button>
+				android:layout_width="80dp" android:layout_height="70dp"></Button>
 			<Button android:text="v" android:id="@+id/quieter"
-				android:layout_width="50dp" android:layout_height="50dp"></Button>
+				android:layout_width="80dp" android:layout_height="70dp"></Button>
 			</LinearLayout>
 		</LinearLayout>
 	</LinearLayout>
