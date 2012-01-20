@@ -1,8 +1,6 @@
 package blue.mote;
 
 import android.app.Activity;
-import android.app.KeyguardManager;
-import android.app.KeyguardManager.KeyguardLock;
 import android.os.Bundle;
 import android.view.WindowManager;
 
