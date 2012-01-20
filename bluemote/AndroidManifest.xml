@@ -22,11 +22,7 @@
             android:label="@string/app_name"
             android:name="BluemoteActivity"
             android:screenOrientation="portrait" >
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <receiver android:name=".ServiceReceiver">
 	    <intent-filter>
@@ -35,6 +31,11 @@
 		</receiver>
         <activity android:name="ChooseDeviceActivity" android:label="@string/choose_device"
             android:screenOrientation="portrait">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:label="@string/choose_function" android:name="ChooseFunctionActivity"
             android:screenOrientation="portrait"></activity>
@@ -42,6 +43,7 @@
             android:screenOrientation="portrait"></activity>
         <activity android:name="VlcFunctionActivity" android:label="@string/vlc_function"
             android:screenOrientation="portrait"></activity>
+        <service android:name="BluemoteService"></service>
     </application>
 
 </manifest>

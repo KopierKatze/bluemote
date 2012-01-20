@@ -27,8 +27,4 @@ public class PresentationFunctionActivity extends FunctionActivity {
 			}
 		});
 	}
-	
-	private void sendKeyViaBT(String command){
-		BluemoteActivity.device_manager.write(command);
-	}
 }

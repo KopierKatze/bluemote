@@ -1,13 +1,12 @@
 package blue.mote;
 
-import java.util.Set;
-import java.util.UUID;
-
 import android.app.ListActivity;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,12 +14,43 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import blue.mote.BluemoteService.MyBinder;
 
 public class ChooseDeviceActivity extends ListActivity {
 	
 	static final int REQUEST_ENABLE_BT = 1;
 	static ArrayAdapter<BluetoothDeviceWrap> btlist;
-	static BluetoothDeviceWrap bt_device;
+	
+	private BluemoteService bluemote_service = null;
+	
+	private ServiceConnection service_connection = new ServiceConnection() {		
+		public void onServiceDisconnected(ComponentName name) {}		
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			MyBinder binder = (MyBinder)service;
+			bluemote_service = binder.getService();
+			bluemote_service.registerListener(new MyListener());
+			bluemote_service.discoverDevices();
+		}
+	};
+	
+	class MyListener implements BluemoteService.MyListener {
+		public void clearDevices() {
+			btlist.clear();
+		}
+		public void newDevice(BluetoothDevice device) {
+			btlist.add(new BluetoothDeviceWrap(device));
+			System.out.println("wirklich praktisch");
+		}
+		public void connectedToDevice() {
+			Intent intent = new Intent(
+					ChooseDeviceActivity.this,
+					ChooseFunctionActivity.class);
+			startActivity(intent);
+		}
+		public void notConnectedToDevice() {
+			showMessage("No you can't. Fail!");
+		}
+	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -30,68 +60,37 @@ public class ChooseDeviceActivity extends ListActivity {
 				android.R.layout.simple_list_item_1);
 		setListAdapter(btlist);
 
-		final Intent choose_function = new Intent(this,
-				ChooseFunctionActivity.class);
-
+		Intent intent = new Intent(this, BluemoteService.class);
+		bindService(intent, service_connection, BIND_AUTO_CREATE);
+		
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				showMessage(((TextView) view).getText());
-				bt_device = btlist.getItem(position);
-				DeviceManager dm = new DeviceManager(bt_device, UUID.fromString(getString(R.string.bluemote_uuid)));
-				dm.run();
-				BluemoteActivity.device_manager = dm;
-				startActivity(choose_function);
+		lv.setOnItemClickListener(
+			new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					if (bluemote_service == null) {
+						// please wait...
+					} else {
+						showMessage(((TextView) view).getText());
+						bluemote_service.connectToDevice(
+								btlist.getItem(position).bt);
+					}
+				}
 			}
-		});
+		);
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
 		btlist.clear();
-		if (!activateBT())
-			showMessage("You have no Bluetooth. We can't go on here.");
-	}
-
-	boolean activateBT() {
-		BluemoteActivity.bt_adapter = BluetoothAdapter.getDefaultAdapter();
-		if (BluemoteActivity.bt_adapter == null)
-			return false;
-		if (!BluemoteActivity.bt_adapter.isEnabled()) {
-			Intent enableBtIntent = new Intent(
-					BluetoothAdapter.ACTION_REQUEST_ENABLE);
-			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-		} else
-			discoverBT();
-		return true;
-	}
-
-	void discoverBT() {
-		showMessage("Discovering Bluetooth devices.");
-		Set<BluetoothDevice> bonded_devices = BluemoteActivity.bt_adapter.getBondedDevices();
-		for (BluetoothDevice device : bonded_devices) {
-			btlist.add(new BluetoothDeviceWrap(device));
-		}
-		// TODO discovering devices
-		// https://developer.android.com/guide/topics/wireless/bluetooth.html
+		if (bluemote_service != null) bluemote_service.discoverDevices();
+		//showMessage("You have no Bluetooth. We can't go on here.");
 	}
 	
 	void showMessage(CharSequence s) {
 		Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_ENABLE_BT) {
-			if (resultCode == RESULT_OK)
-				discoverBT();
-			else
-				showMessage("We really need Bluetooth to go on.");
-		}
 	}
 	
 	class BluetoothDeviceWrap {
@@ -102,5 +101,11 @@ public class ChooseDeviceActivity extends ListActivity {
 		public String toString() {
 			return bt.getName() + " | " + bt.getAddress();
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		unbindService(service_connection);
+		super.onDestroy();
 	}
 }

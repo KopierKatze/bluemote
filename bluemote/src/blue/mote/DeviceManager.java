@@ -1,34 +1,34 @@
 package blue.mote;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import blue.mote.ChooseDeviceActivity.BluetoothDeviceWrap;
 
 class DeviceManager extends Thread {
 
-	private final BluetoothDeviceWrap device;
+	public BluetoothDevice device;
 	private final UUID uuid;
 	
 	private BluetoothSocket socket;
-	private InputStream ins;
 	private OutputStream outs;
-	private boolean connected = false;
+	public boolean connected = false;
 	
 	OnConnectedCallback onConnectedCallback;
+	OnNotConnectedCallback onNotConnectedCallback;
 	OnErrorCallback onErrorCallback;
 	OnReadCallback onReadCallback;
 	OnDisconnectedCallback onDisconnectedCallback;
 	
 	interface OnConnectedCallback 	 { void call(); }
+	interface OnNotConnectedCallback { void call(); }
 	interface OnErrorCallback 		 { void call(String msg); }
 	interface OnReadCallback 		 { void call(String data); }
 	interface OnDisconnectedCallback { void call(); }
-
-	DeviceManager(BluetoothDeviceWrap device, UUID uuid) {
+	
+	DeviceManager(BluetoothDevice device, UUID uuid) {
 		this.device = device;
 		this.uuid = uuid;
 	}
@@ -36,37 +36,28 @@ class DeviceManager extends Thread {
 	@Override
 	public void run() {
 		super.run();
-
 		try {
-			System.out.println("--------------------------- run");
-			socket = device.bt.createRfcommSocketToServiceRecord(uuid);
-			System.out.println("------------------------------socket");
+			socket = device.createRfcommSocketToServiceRecord(uuid);
 			socket.connect();
-			connected = true;
-			System.out.println("---------------------------connected");
-			ins = socket.getInputStream();
 			outs = socket.getOutputStream();
-			System.out.println("---------------------------" + outs.toString());
+			connected = true;
 			if (onConnectedCallback != null)
 				onConnectedCallback.call();
-//			while (connected) {
-//				final byte[] buffer = new byte[1024];
-//				ins.read(buffer);
-//				if (onReadCallback != null)
-//					onReadCallback.call(new String(buffer));
-//			}
 		} catch (final IOException e) {
 			if (onErrorCallback != null)
 				onErrorCallback.call(e.getMessage());
+			if (onNotConnectedCallback != null)
+				onNotConnectedCallback.call();
 			disconnect();
 		}
-
 	}
 
 	void disconnect() {
 		try {
 			connected = false;
+			device = null;
 			socket.close();
+			socket = null;
 			if (onDisconnectedCallback != null)
 				onDisconnectedCallback.call();
 		} catch (final IOException e) {
@@ -76,6 +67,7 @@ class DeviceManager extends Thread {
 	}
 
 	void write(String s) {
+		if (outs == null) return;
 		try {
 			// TODO blocks, the thread has to manage a buffer
 			outs.write(s.getBytes());
