@@ -8,8 +8,10 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
 public class VlcFunctionActivity extends FunctionActivity {
+	
 	static boolean playing = false;
 	static PhoneStateListener phonelistener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,9 +77,5 @@ public class VlcFunctionActivity extends FunctionActivity {
 				sendKeyViaBT(key);
 			}
 		});
-	}
-	
-	private void sendKeyViaBT(String command){
-		BluemoteActivity.device_manager.write(command);
 	}
 }
