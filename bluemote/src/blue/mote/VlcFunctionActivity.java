@@ -24,7 +24,7 @@ public class VlcFunctionActivity extends FunctionActivity {
 		        
 		        case TelephonyManager.CALL_STATE_RINGING:
 		            if(playing)
-		            	sendKeyViaBT("key space\n");
+		            	switchPlayBtn();
 		        	break;
 		            
 		        default:
@@ -35,9 +35,7 @@ public class VlcFunctionActivity extends FunctionActivity {
 		
 		disableScreenLock();
 		
-		ImageButton btn = (ImageButton)findViewById(R.id.play);
-		btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
-		playKey(R.id.play, "key space\n");
+		playKey();
 		bindKey(R.id.louder, 
 				"keydown Control_L\n" + 
 				"key Up\n" +
@@ -53,7 +51,7 @@ public class VlcFunctionActivity extends FunctionActivity {
 		bindKey(R.id.slowforward, 
 				"keydown Shift_L\n" + 
 				"key Right\n" + 
-				"keyup Shift_L\n");
+				"keyup Shift_L\n"); 
 		bindKey(R.id.fastback, "key p\n");
 		bindKey(R.id.fastforward, "key n\n");
 	}
@@ -63,19 +61,24 @@ public class VlcFunctionActivity extends FunctionActivity {
 		btn.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				sendKeyViaBT(key);
-				
+  			}
+		});
+	}
+	
+	private void playKey(){
+		final ImageButton btn = (ImageButton)findViewById(R.id.play);
+		btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
+		btn.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				switchPlayBtn();
 			}
 		});
 	}
 	
-	private void playKey(final int btn_id, final String key){
-		final ImageButton btn = (ImageButton)findViewById(btn_id);
-		btn.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				playing = !playing;
-				btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
-				sendKeyViaBT(key);
-			}
-		});
+	private void switchPlayBtn(){
+		final ImageButton btn = (ImageButton)findViewById(R.id.play);
+		playing = !playing;
+		btn.setImageResource(playing ? R.drawable.pause : R.drawable.play);
+		sendKeyViaBT("key space\n");
 	}
 }

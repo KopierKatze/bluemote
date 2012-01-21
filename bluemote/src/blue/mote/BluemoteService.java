@@ -72,14 +72,14 @@ public class BluemoteService extends Service {
 		// XXX BluetoothAdapter.getDefaultAdapter().startDiscovery();
 		Set<BluetoothDevice> list =
 			BluetoothAdapter.getDefaultAdapter().getBondedDevices();
-		System.out.println("27 wirklich praktisch " + list.size());
 		for (BluetoothDevice device : list) {
 			listener.newDevice(device);
 		}
 	}
 	
 	public void disconnectFromDevice() {
-		device_manager.disconnect();
+		if(device_manager != null)
+			device_manager.disconnect();
 	}
 	
 	
@@ -95,5 +95,7 @@ public class BluemoteService extends Service {
 		BluetoothAdapter.getDefaultAdapter().enable();
 	}
 	
-	
+	public void onDestroy(){
+		disconnectFromDevice();
+	}
 }

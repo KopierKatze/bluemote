@@ -46,6 +46,7 @@ class DeviceManager extends Thread {
 		} catch (final IOException e) {
 			if (onErrorCallback != null)
 				onErrorCallback.call(e.getMessage());
+				System.out.println(e.getMessage());
 			if (onNotConnectedCallback != null)
 				onNotConnectedCallback.call();
 			disconnect();
@@ -53,9 +54,11 @@ class DeviceManager extends Thread {
 	}
 
 	void disconnect() {
+		connected = false;
+		device = null;
+		
+		if(socket == null) return;
 		try {
-			connected = false;
-			device = null;
 			socket.close();
 			socket = null;
 			if (onDisconnectedCallback != null)

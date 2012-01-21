@@ -39,8 +39,7 @@ public class ChooseDeviceActivity extends ListActivity {
 		}
 		public void newDevice(BluetoothDevice device) {
 			btlist.add(new BluetoothDeviceWrap(device));
-			System.out.println("wirklich praktisch");
-		}
+     		}
 		public void connectedToDevice() {
 			Intent intent = new Intent(
 					ChooseDeviceActivity.this,
@@ -89,8 +88,12 @@ public class ChooseDeviceActivity extends ListActivity {
 		//showMessage("You have no Bluetooth. We can't go on here.");
 	}
 	
-	void showMessage(CharSequence s) {
-		Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+	void showMessage(final CharSequence s) {
+		runOnUiThread(new Runnable(){
+			public void run() {
+				Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	class BluetoothDeviceWrap {
