@@ -2,6 +2,8 @@ package blue.mote;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothDevice;
@@ -11,7 +13,6 @@ class DeviceManager extends Thread {
 
 	public BluetoothDevice device;
 	private final UUID uuid;
-	
 	private BluetoothSocket socket;
 	private OutputStream outs;
 	public boolean connected = false;
@@ -37,7 +38,24 @@ class DeviceManager extends Thread {
 	public void run() {
 		super.run();
 		try {
-			socket = device.createRfcommSocketToServiceRecord(uuid);
+			Method m = null;
+			try {
+				m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+			try {
+				socket = (BluetoothSocket) m.invoke(device, 6);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+//			socket = device.createRfcommSocketToServiceRecord(uuid);
 			socket.connect();
 			outs = socket.getOutputStream();
 			connected = true;

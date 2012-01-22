@@ -37,9 +37,17 @@ public class ChooseDeviceActivity extends ListActivity {
 		public void clearDevices() {
 			btlist.clear();
 		}
-		public void newDevice(BluetoothDevice device) {
-			btlist.add(new BluetoothDeviceWrap(device));
-     		}
+		public void newDevice(BluetoothDevice device) { 
+			boolean contains = false;
+			for(int device_index = 0; device_index < btlist.getCount(); device_index++){
+				if(btlist.getItem(device_index).bt.getAddress().equals(device.getAddress())){
+					contains = true;
+					break;
+				}
+			}
+			if(contains == false)
+				btlist.add(new BluetoothDeviceWrap(device));
+     	}
 		public void connectedToDevice() {
 			Intent intent = new Intent(
 					ChooseDeviceActivity.this,

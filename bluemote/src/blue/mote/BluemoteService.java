@@ -9,7 +9,10 @@ import blue.mote.DeviceManager.OnNotConnectedCallback;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Binder;
 import android.os.IBinder;
 
@@ -29,6 +32,8 @@ public class BluemoteService extends Service {
 	@Override
 	public void onCreate() {
 		uuid = UUID.fromString(getString(R.string.bluemote_uuid));
+		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+		registerReceiver(mReceiver, filter);
 	}
 	
 	public IBinder onBind(Intent arg0) { return binder; }
@@ -44,7 +49,19 @@ public class BluemoteService extends Service {
 		public void notConnectedToDevice();
 	}
 	
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+	    public void onReceive(Context context, Intent intent) {
+	        String action = intent.getAction();
+	        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+	            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+	            listener.newDevice(device);
+	        }
+	    }
+	};
+	
+	
 	public void connectToDevice(BluetoothDevice wanted_device) {
+		BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
 		if (device_manager == null || wanted_device != device_manager.device) {
 			if (device_manager != null) device_manager.disconnect();
 			device_manager = new DeviceManager(wanted_device, uuid);
@@ -69,7 +86,7 @@ public class BluemoteService extends Service {
 	
 	void discoverDevices() {
 		if (!isEnabled()) enable();
-		// XXX BluetoothAdapter.getDefaultAdapter().startDiscovery();
+		BluetoothAdapter.getDefaultAdapter().startDiscovery();
 		Set<BluetoothDevice> list =
 			BluetoothAdapter.getDefaultAdapter().getBondedDevices();
 		for (BluetoothDevice device : list) {
@@ -97,5 +114,7 @@ public class BluemoteService extends Service {
 	
 	public void onDestroy(){
 		disconnectFromDevice();
+		BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+		unregisterReceiver(mReceiver);
 	}
 }
