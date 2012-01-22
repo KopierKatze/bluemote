@@ -124,14 +124,16 @@ class DeviceManager extends Thread {
 		}
 	}
 
-	void write(String s) {
-		if (outs == null) return;
+	boolean write(String s) {
+		if (outs == null) return false;
 		try {
 			// TODO blocks, the thread has to manage a buffer
 			outs.write(s.getBytes());
+			return true;
 		} catch (final IOException e) {
 			if (onErrorCallback != null)
 				onErrorCallback.call(e.getMessage());
+			return false;
 		}
 	}
 }

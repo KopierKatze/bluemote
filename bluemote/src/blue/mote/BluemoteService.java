@@ -101,7 +101,12 @@ public class BluemoteService extends Service {
 	
 	
 	public void sendCommandToDevice(String command) {
-		device_manager.write(command);
+		if (device_manager == null) return;
+		if (device_manager.write(command) == false) {
+			BluetoothDevice device = device_manager.device;
+			disconnectFromDevice();
+			connectToDevice(device);
+		}
 	}
 	
 	private boolean isEnabled() {
