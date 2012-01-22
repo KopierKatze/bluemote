@@ -33,29 +33,66 @@ class DeviceManager extends Thread {
 		this.device = device;
 		this.uuid = uuid;
 	}
+	
+	private BluetoothSocket createNewSocket(){
+		Method m = null;
+		try {
+			m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", new Class[] {UUID.class});
+		} catch (SecurityException e1) {
+			e1.printStackTrace();
+			return null;
+		} catch (NoSuchMethodException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+		try {
+			return (BluetoothSocket) m.invoke(device, uuid);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private BluetoothSocket createOldSocket(){
+		Method m = null;
+		try {
+			m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			return null;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return null;
+		}
+		try {
+			return (BluetoothSocket) m.invoke(device, 6);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		}
 
+	}
 	@Override
 	public void run() {
 		super.run();
 		try {
-			Method m = null;
-			try {
-				m = device.getClass().getMethod("createInsecureRfcommSocket", new Class[] {int.class});
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-			try {
-				socket = (BluetoothSocket) m.invoke(device, 6);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-//			socket = device.createRfcommSocketToServiceRecord(uuid);
+			// for devices < version 2.3 workaround 
+			socket = createNewSocket();
+			if(socket == null)
+				socket = createOldSocket();
+			
 			socket.connect();
 			outs = socket.getOutputStream();
 			connected = true;
