@@ -33,7 +33,7 @@ class KeyRelay:
         try: self.xte.stdin.write(input)
         except:
             try: self.xte.close()
-            except e: print e
+            except Exception as e: print e
             self.setup()
             self.xte.stdin.write(input)
 
