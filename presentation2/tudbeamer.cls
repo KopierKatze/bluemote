@@ -328,7 +328,7 @@
 % frame title
 \gdef\frame@title@section{}
 \def\frametitle{\secdef\tud@frametitlea\tud@frametitles}
-\newcommand<>\tud@frametitlea{\gdef\frame@title@section{\ifnum\c@section>9\else 0\fi\arabic{section}\,\,}\alt#1{\@dblarg\beamer@@frametitle}{\beamer@gobbleoptional}}
+\newcommand<>\tud@frametitlea{\gdef\frame@title@section{}\alt#1{\@dblarg\beamer@@frametitle}{\beamer@gobbleoptional}}
 \newcommand<>\tud@frametitles{\gdef\frame@title@section{}\alt#1{\@dblarg\beamer@@frametitle}{\beamer@gobbleoptional}}
 
 % Sprache einstellen

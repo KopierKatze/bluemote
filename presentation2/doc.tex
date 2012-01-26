@@ -54,47 +54,40 @@
 
 \section{Challenges}
 \begin{frame}
+	\frametitle{Bluetooth}
     \begin{itemize}
-    	\item Bluetooth:
     	\item Get next free channel: channel that is blocked by another service
         \item No Bluetooth in emulator
         \item Finding a good strategy for unpaired devices
-        \item Bluetooth sockets in Android 2.1
-        \item Windows Bluetooth stack\textbf{s} vs. bluez on Linux
+        \item Android Bluetooth interface too restricted
+		\item Bluetooth programming in Windows complicated (``one or many required arguments are invalid'')
     \end{itemize}
 \end{frame}
 
 \begin{frame}
+	\frametitle{Other}
 	\begin{itemize}
-		\item Other:
-		\item handling incoming calls not well documented
+		\item Handling incoming calls not well documented
+		\item Fault tolerance
+		\item \texttt{device.getClass().getMethod("createInsecureRfcommSocket", new Class[]  \{int.class\} );}
 	\end{itemize}
-
-\section{Good stuff} % keep??
-\begin{frame}
-    \begin{itemize}
-        \item Easy things are easy
-    	\item Documented stuff is documented well
-    	\item Undocumented stuff is hard
-        \item Stackoverflow.com is your friend, not in case of DenverCoder9
-    \end{itemize}
+	
 \end{frame}
 
-\section{TODO}
+\section{Open Issues}
 \begin{frame}
     \begin{itemize}
-        \item Sort list of bluetooth devices(recently used) 
+        \item Sort list of Bluetooth devices(recently used) 
         \item Port to Windows
     \end{itemize}
 \end{frame}
 
-\section{Lessons}
+\section{Lessons Learned}
 \begin{frame}
 	\begin{itemize}
 		\item Bluetooth is not very robust
-		\item Newer Android versions could have better Bluetooth support
+		\item Android framework too restrictive  $\longleftrightarrow$ flexibility of Linux and hardware
     \end{itemize}
 \end{frame}
 
 \end{document}
-
