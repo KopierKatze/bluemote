@@ -1,0 +1,100 @@
+\documentclass[ddc nogerman]{tudbeamer}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+
+% \imageframe{img/some_cat.jpg}
+\newcommand{\imageframe}[1]{
+    \begin{frame}
+        \begin{figure}
+            \centering
+            \includegraphics[height=0.9\textheight]{#1}
+        \end{figure}
+    \end{frame}
+}
+
+% the content
+\begin{document}
+
+\einrichtung{Department of Computer Science}
+\institut{Institute for System Archticture}
+\professur{Chair for Computer Networks}
+
+\title{Application Development for Mobile and Ubiquitous Computing}
+\subtitle{Seminar Task Second Presentation}
+\author{Alexandra Weiß, Gilbert Röhrbein}
+
+\maketitle
+
+\section{Bluemote}
+\begin{frame}
+    \makebox[\textwidth]{\centering \Huge \textbf{ Bluemote } }
+\end{frame}
+
+\section{Concrete Use Cases}
+\begin{frame}
+    \begin{itemize}
+        \item Lolling on a couch, watching movies
+        \item Giving a presentation ;-)
+    \end{itemize}
+\end{frame}
+
+\imageframe{img/use-case-vlc.jpg}
+
+\section{Screenshots}
+\imageframe{img/choosedevice.png}
+\imageframe{img/choosefunction.png}
+\imageframe{img/presentation.png}
+\imageframe{img/vlc.png}
+
+\section{Architecture}
+\imageframe{img/components.pdf}
+
+\section{Challenges}
+\begin{frame}
+    \begin{itemize}
+    	\item Bluetooth:
+    	\item Get next free channel: channel that is blocked by another service
+        \item No Bluetooth in emulator
+        \item Finding a good strategy for unpaired devices
+        \item Bluetooth sockets in Android 2.1
+        \item Windows Bluetooth stack\textbf{s} vs. bluez on Linux
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{itemize}
+		\item Other:
+		\item handling incoming calls not well documented
+	\end{itemize}
+
+\section{Good stuff} % keep??
+\begin{frame}
+    \begin{itemize}
+        \item Easy things are easy
+    	\item Documented stuff is documented well
+    	\item Undocumented stuff is hard
+        \item Stackoverflow.com is your friend, not in case of DenverCoder9
+    \end{itemize}
+\end{frame}
+
+\section{TODO}
+\begin{frame}
+    \begin{itemize}
+        \item Sort list of bluetooth devices(recently used) 
+        \item Port to Windows
+    \end{itemize}
+\end{frame}
+
+\section{Lessons}
+\begin{frame}
+	\begin{itemize}
+		\item Bluetooth is not very robust
+		\item Newer Android versions could have better Bluetooth support
+    \end{itemize}
+\end{frame}
+
+\end{document}
+
